@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+
+
+/* === COLUMNA IZQUIERDA === */
+
+.left-column {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 100vh;
+  background: var(--bg-main);
+  color: var(--txt-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.menu-btn {
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-size: var(--icon-size);
+  cursor: pointer;
+  height: 60px;
+  width: 100%;
+}
+
+.icon-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border: solid 1px #fff;  */
+}
+
+.icon-list a {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--icon-size);
+  color: var(--txt-light);
+  text-decoration: none;
+  border: solid 1px #ff0000;
+  text-align: center;
+  
+}
+
+.icon-list a:hover {
+  color: white;
+}
+
+/* === SIDEBAR SUPERPUESTO (HEREDA ESTILO DE LA COLUMNA) === */
+
+.overlay-sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100vh;
+  background: var(--bg-main);
+  color: var(--txt-light);
+  transition: left 0.25s ease;
+  /* padding-top: var(--spacing);*/
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--spacing); */
+}
+
+.overlay-sidebar.open {
+  left: 0;
+}
+
+.close-btn {
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-size: var(--icon-size);
+  padding: 8px 10px;
+  width: fit-content;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-start; /* igual que el botón de abrir */
+  height: 60px;
+  padding-left: var(--spacing);
+  width: 60px;
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--spacing); */
+}
+
+.sidebar-list a {
+  text-decoration: none;
+  font-size: var(--icon-size);
+  color: var(--txt-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: solid 1px #ff0000;
+  height: 70px;
+  width: 100%;
+  padding-left: var(--spacing);
+}
+
+.sidebar-list a:hover {
+  background: var(--bg-hover);
+  /* padding: 8px;
+  border-radius: 6px; */
+}

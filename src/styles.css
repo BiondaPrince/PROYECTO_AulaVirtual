@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background: #f3f4f6;
+}
+
+/* === BASE ESTÉTICA PARA AMBOS LADOS === */
+
+:root {
+  --bg-main: #000f37;
+  --bg-hover: #1f2937;
+  --txt-light: #e5e7eb;
+  --accent: #000f37;
+  /* --accent: #2563eb; */
+
+  --spacing: 24px;           /* mismo espaciado vertical */
+  --icon-size: 24px;
+  --font-size: 18px;
+}
+
+
+/* === CONTENIDO === */
+
+.content {
+  margin-left: 70px;
+  margin-top: 70px;
+  padding: 20px;
+}
