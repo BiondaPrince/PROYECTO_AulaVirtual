@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles.css";
 import Sidebar from "./components/siderbar.jsx";
 import Navbar from "./components/navbar.jsx";
+import Home from "./components/Home.jsx";
 
 export default function App() {
   const [open, setOpen] = useState(false);
@@ -13,7 +14,7 @@ export default function App() {
       <Navbar />
 
       <main className="content">
-        <h1>Pantalla principal</h1>
+        <Home />
       </main>
     </>
   );

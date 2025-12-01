@@ -18,16 +18,16 @@ body {
   --accent: #000f37;
   /* --accent: #2563eb; */
 
-  --spacing: 24px;           /* mismo espaciado vertical */
+  --spacing: 24px;           
   --icon-size: 24px;
   --font-size: 18px;
 }
 
 
-/* === CONTENIDO === */
 
 .content {
-  margin-left: 70px;
-  margin-top: 70px;
-  padding: 20px;
+  margin-left: 70px !important;
+  margin-top: 60px !important;
+  padding: 20px !important;
+  width: auto !important;
 }

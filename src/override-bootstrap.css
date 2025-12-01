@@ -1,0 +1,45 @@
+/* === PROTEGER LAYOUT DEL SIDEBAR === */
+/* Solo protegemos los estilos que Bootstrap intenta romper */
+
+.left-column {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 70px !important;
+  height: 100vh !important;
+  z-index: 10 !important;
+}
+
+.overlay-sidebar {
+  position: fixed !important;
+  z-index: 999 !important;
+}
+
+.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 70px !important;
+  width: calc(100% - 70px) !important;
+  height: 60px !important;
+  z-index: 5 !important;
+}
+
+.content {
+  margin-left: 70px !important;
+  margin-top: 60px !important;
+}
+
+@media (max-width: 768px) {
+  .left-column {
+    display: none !important;
+  }
+
+  .navbar {
+    left: 0 !important;
+    width: 100% !important;
+  }
+
+  .content {
+    margin-left: 0 !important;
+  }
+}

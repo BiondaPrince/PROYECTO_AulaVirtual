@@ -1,0 +1,69 @@
+
+
+
+.coursegrid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 25px 10px;
+}
+
+
+.course-card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+}
+
+
+.course-image-wrapper {
+  width: 100%;
+  height: 180px; 
+  overflow: hidden;
+  background-color: #f5f7fb; /* Fondo suave */
+}
+
+
+
+
+
+
+
+.course-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+
+.course-info {
+  padding: 15px;
+}
+
+.progress {
+  font-size: 12px;
+  color: #ff7b00;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.course-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.course-details {
+  color: #555;
+  font-size: 14px;
+}
+
