@@ -12,10 +12,10 @@ body {
 /* === BASE ESTÉTICA PARA AMBOS LADOS === */
 
 :root {
-  --bg-main: #000f37;
-  --bg-hover: #1f2937;
+  --bg-main: #319083;
+  --bg-hover: #164f48;
   --txt-light: #e5e7eb;
-  --accent: #000f37;
+  --accent: #319083;
   /* --accent: #2563eb; */
 
   --spacing: 24px;           
