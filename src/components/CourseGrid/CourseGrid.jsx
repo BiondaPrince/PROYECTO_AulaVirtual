@@ -36,7 +36,7 @@ export default function CourseGrid() {
             <div className="progress">{course.progress}%</div>
             <h3 className="course-title">{course.title}</h3>
             <p className="course-details">
-              {course.code} · {course.mode}
+              {course.mode}
             </p>
             </div>
           </div>
