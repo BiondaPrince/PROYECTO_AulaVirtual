@@ -10,7 +10,7 @@
   left: 0 !important;
   width: 70px !important;
   height: 100vh !important;
-  background: var(--bg-main) !important;
+  background: #000f37 !important;
   color: var(--txt-light);
   display: flex !important;
   flex-direction: column !important;
@@ -19,7 +19,7 @@
 }
 
 .menu-btn {
-  background: var(--accent);
+  background: #000f37;
   border: none;
   color: white;
   font-size: var(--icon-size);
@@ -60,7 +60,7 @@
   left: -260px;
   width: 260px;
   height: 100vh;
-  background: var(--bg-main);
+  background: #000f37;
   color: var(--txt-light);
   transition: left 0.25s ease;
   /* padding-top: var(--spacing);*/
@@ -141,4 +141,21 @@
   .overlay-sidebar.open {
     left: 0;        
   }
+}
+
+/* Force icons in sidebar to be white for consistent contrast */
+.left-column .material-icons,
+.left-column .material-icons-outlined,
+.overlay-sidebar .material-icons,
+.overlay-sidebar .material-icons-outlined,
+.icon-list a .material-icons,
+.icon-list a .material-icons-outlined,
+.sidebar-list a .material-icons,
+.sidebar-list a .material-icons-outlined {
+  color: #ffffff !important;
+}
+
+/* Ensure sidebar labels are also light-colored */
+.overlay-sidebar .sidebar-list a h6 {
+  color: #ffffff;
 }

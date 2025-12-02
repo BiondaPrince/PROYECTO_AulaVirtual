@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 import "./coursegrid.css";
 
 export default function CourseGrid() {
@@ -25,10 +26,11 @@ export default function CourseGrid() {
   return (
     <div className="coursegrid-container">
       {courses.map((course) => (
-        <div key={course.id} className="course-card">
-          <div className="course-image-wrapper">
-            <img src={course.image} alt={course.title} className="course-image" />
-          </div>
+        <Link key={course.id} to={`/course/${course.id}`} className="course-card-link">
+          <div className="course-card">
+            <div className="course-image-wrapper">
+              <img src={course.image} alt={course.title} className="course-image" />
+            </div>
 
           <div className="course-info">
             <div className="progress">{course.progress}%</div>
@@ -36,8 +38,9 @@ export default function CourseGrid() {
             <p className="course-details">
               {course.code} · {course.mode}
             </p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

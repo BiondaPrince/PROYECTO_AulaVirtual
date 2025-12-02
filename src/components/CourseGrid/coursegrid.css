@@ -11,6 +11,16 @@
   padding: 25px 10px;
 }
 
+/* Ensure Link wrapper has no underline and inherits color */
+.course-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.course-card-link:hover .course-card {
+  transform: translateY(-4px);
+}
+
 
 .course-card {
   background: white;

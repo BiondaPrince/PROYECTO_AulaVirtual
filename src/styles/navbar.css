@@ -22,3 +22,6 @@
   margin-left: auto !important;
   font-size: 18px !important;
 }
+
+.user-name{margin-right:12px}
+.btn-logout{font-size:13px;padding:6px 8px;color:#0d6efd;border:0;background:transparent}
