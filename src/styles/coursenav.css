@@ -1,0 +1,12 @@
+.course-nav-tabs{background:transparent;padding:8px 0}
+.course-nav-tabs nav{display:flex;gap:8px;flex-wrap:wrap}
+.course-nav-tabs .nav-item{border-radius:6px;padding:8px 12px;border:1px solid transparent}
+.course-nav-tabs .nav-item.active{box-shadow:inset 0 -3px 0 rgba(0,0,0,0.06);}
+.course-nav-tabs .nav-item.deliver.active{background:#e9f7ef;border-color:#c6efd7}
+.course-nav-tabs .nav-item.view.active{background:#eef6ff;border-color:#cfe8ff}
+.course-nav-tabs .nav-item.forum.active{background:#fff4e6;border-color:#ffe8c7}
+.course-nav-tabs .nav-item.announcements.active{background:#f7eefc;border-color:#e7d9fb}
+
+.course-nav-tabs .nav-item.btn{cursor:pointer}
+
+.week-actions .btn{min-width:140px}
