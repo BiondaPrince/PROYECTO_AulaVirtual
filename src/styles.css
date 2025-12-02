@@ -31,3 +31,10 @@ body {
   padding: 20px !important;
   width: auto !important;
 }
+
+/* When auth pages (login/register) hide navbar and sidebar, remove reserved margins */
+.content.no-layout {
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+}

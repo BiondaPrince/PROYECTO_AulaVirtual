@@ -1,0 +1,71 @@
+.course-detail-container {
+    padding: 1rem 1.5rem
+}
+
+.course-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem
+}
+
+.course-header h2 {
+    margin: 0
+}
+
+.muted {
+    color: #6c757d
+}
+
+.back-btn {
+    padding: 0;
+    margin-right: auto
+}
+
+.week-card {
+    margin-bottom: 0.75rem;
+    border: 0
+}
+
+.card-header {
+    background: #fff;
+    padding: 0
+}
+
+.week-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    border-left: 6px solid #0d6efd;
+    text-align: left
+}
+
+.week-content {
+    margin: 0
+}
+
+/* Remove underline/anchor-like styling from the toggle button (Bootstrap's btn-link) */
+.week-toggle,
+.week-toggle:focus,
+.week-toggle:hover,
+.week-toggle:active {
+    text-decoration: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+}
+
+.week-toggle .chev {
+    margin-left: 8px
+}
+
+/* Remove link-like styling from the "Volver" button */
+.back-btn,
+.back-btn:focus,
+.back-btn:hover,
+.back-btn:active {
+    text-decoration: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+}

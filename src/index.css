@@ -1,0 +1,17 @@
+/* Quitar subrayado por defecto de los enlaces en toda la app */
+a {
+	text-decoration: none !important;
+	color: inherit;
+}
+
+a:hover, a:focus {
+	text-decoration: none !important;
+}
+
+/* Asegurar que los enlaces que envuelven las cards no muevan el layout */
+.course-card-link {
+	display: block;
+	text-decoration: none !important;
+	color: inherit;
+}
+
