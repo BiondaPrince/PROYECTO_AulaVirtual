@@ -23,10 +23,13 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const success = await login(formData);
+    // Recibes el success y el rol
+    const { success, isProfesor } = await login(formData);
 
     if (success) {
-      navigate("/");
+      // Redirección automática según rol
+      if (isProfesor) navigate("/teacher");
+      else navigate("/");
     } else {
       alert("Credenciales incorrectas");
     }

@@ -1,59 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './coursedetail.css';
-import WeekItem from './WeekItem.jsx';
+import React from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import './coursedetail.css'
+import WeekItem from './WeekItem.jsx'
+
+const courses = [
+  { id: 1, title: 'Diseño de Patrones' },
+  { id: 2, title: 'Administración de Empresas' },
+  { id: 3, title: 'Gestión de Proyectos' },
+  { id: 4, title: 'Desarrollo Web Frontend' },
+  { id: 5, title: 'Bases de Datos SQL' },
+  { id: 6, title: 'Ciberseguridad Aplicada' }
+]
 
 export default function CourseDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const course = courses.find(c => String(c.id) === String(id)) || { id, title: 'Curso' }
 
-  const [courses, setCourses] = useState([]);
-  const [mensajes, setMensajes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const weeks = Array.from({ length: 18 }, (_, i) => ({
+    id: i + 1,
+    title: `Semana ${i + 1}`,
+    content: `Contenido de la semana ${i + 1}.`
+  }))
 
-  // Cargar cursos
-  useEffect(() => {
-    fetch("http://localhost:8080/curso")
-      .then(res => res.ok ? res.json() : Promise.reject('Error al cargar cursos'))
-      .then(data => {
-        const formatted = data.map(c => ({
-          id: c.idCurso,
-          title: c.nombre
-        }));
-        setCourses(formatted);
+  // load tasks once and group by week
+  const [tasksByWeek, setTasksByWeek] = React.useState({})
+
+  React.useEffect(()=>{
+    try{
+      const raw = localStorage.getItem(`tasks_course_${course.id}`)
+      const all = raw ? JSON.parse(raw) : []
+      const grouped = {}
+      all.forEach(t => {
+        const wk = t.week || 0
+        if(!grouped[wk]) grouped[wk] = []
+        grouped[wk].push(t)
       })
-      .catch(err => setError(err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Cargar mensajes
-  useEffect(() => {
-    fetch("http://localhost:8080/mensajes")
-      .then(res => res.ok ? res.json() : Promise.reject('Error al cargar mensajes'))
-      .then(data => setMensajes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  if (loading) return <p>Cargando curso...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  const course = courses.find(c => String(c.id) === String(id)) || { id, title: 'Curso no encontrado' };
-
-  // Semanas de ejemplo
-  const weeks = Array.from({ length: 18 }, (_, i) => {
-    const semanaNum = i + 1;
-    // Filtrar los mensajes de esta semana y curso
-    const mensajesSemana = mensajes.filter(
-      m => m.idCurso === course.id && m.semana === semanaNum
-    );
-    return {
-      id: semanaNum,
-      title: `Semana ${semanaNum}`,
-      content: `Contenido de la semana ${semanaNum}.`,
-      mensajes: mensajesSemana // simplemente los añadimos aquí
-    };
-  });
+      setTasksByWeek(grouped)
+    }catch(e){ setTasksByWeek({}) }
+  },[course.id])
 
   return (
     <div className="course-detail-container">
@@ -64,10 +49,61 @@ export default function CourseDetail() {
       </div>
 
       <div className="accordion" id="weeksAccordion">
-        {weeks.map(w => (
-          <WeekItem key={w.id} week={w} parentId="weeksAccordion" />
+        {weeks.map((w) => (
+          <WeekItem key={w.id} week={w} parentId="weeksAccordion" courseId={course.id} tasks={tasksByWeek[w.id] || []} />
         ))}
       </div>
+
+      {/* Nota: las tareas ahora se muestran dentro de cada semana en su acordeón. */}
+
+      <section id="forum" className="course-section">
+        <h3>Foro</h3>
+        <p className="muted">Foro de consultas del curso (plantilla).</p>
+      </section>
+
+      <section id="submissions" className="course-section">
+        <h3>Entregas</h3>
+        <p className="muted">Listado de tus entregas para este curso.</p>
+        <StudentSubmissions courseId={course.id} />
+      </section>
     </div>
-  );
+  )
+}
+
+// Note: StudentTasks and the inline StudentUpload were removed. Tasks and uploads are now shown per-week inside each WeekItem using the shared `StudentUpload` component.
+
+function StudentSubmissions({ courseId }){
+  const [items, setItems] = React.useState([])
+
+  React.useEffect(()=>{
+    try{
+      const all = []
+      // iterate over localStorage keys
+      for(let i=0;i<localStorage.length;i++){
+        const key = localStorage.key(i)
+        if(!key) continue
+        const m = key.match(new RegExp(`^submissions_${courseId}_(\\d+)$`))
+        if(m){
+          const taskId = m[1]
+          const raw = localStorage.getItem(key)
+          const arr = raw ? JSON.parse(raw) : []
+          arr.forEach(a => all.push({ taskId, name: a.name, date: a.date }))
+        }
+      }
+      setItems(all)
+    }catch(e){ setItems([]) }
+  },[courseId])
+
+  if(items.length === 0) return <div className="card p-3">Aún no tienes entregas.</div>
+
+  return (
+    <div className="submissions-list">
+      {items.map((it, idx) => (
+        <div key={idx} className="submission-item card mb-2 p-2">
+          <div><strong>{it.name}</strong></div>
+          <div className="muted">Tarea: {it.taskId} — {new Date(it.date).toLocaleString()}</div>
+        </div>
+      ))}
+    </div>
+  )
 }

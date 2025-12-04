@@ -28,34 +28,30 @@ export function AuthProviderWrapper({ children }) {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        console.error("Error en el login");
-        return false;
-      }
+      if (!response.ok) return { success: false };
 
       const result = await response.json();
+
+      // Guardar token
       setToken(result);
       localStorage.setItem("token", JSON.stringify(result));
 
-      try {
-        const decoded = jwtDecode(result.token);
+      // Decodificar token
+      const decoded = jwtDecode(result.token);
 
-        setUser(decoded);
-        setIsProfesor(decoded.role === "PROFESOR");
+      // CORRECCIÓN: usar "rol" en vez de "role"
+      const esProfesor = decoded.rol === "PROFESOR";
 
-        localStorage.setItem("user", JSON.stringify(decoded));
-        localStorage.setItem(
-          "isProfesor",
-          JSON.stringify(decoded.role === "PROFESOR")
-        );
-      } catch (e) {
-        console.error("Error al decodificar token:", e);
-      }
+      // Guardar usuario y rol
+      setUser(decoded);
+      setIsProfesor(esProfesor);
 
-      return true;
+      localStorage.setItem("user", JSON.stringify(decoded));
+      localStorage.setItem("isProfesor", JSON.stringify(esProfesor));
+
+      return { success: true, isProfesor: esProfesor };
     } catch (e) {
-      console.error("Error al iniciar sesion: ", e);
-      return false;
+      return { success: false };
     }
   };
 

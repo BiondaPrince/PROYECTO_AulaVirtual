@@ -1,77 +1,60 @@
-import { useState, useEffect } from 'react';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import StudentUpload from '../StudentUpload'
 
-export default function WeekItem({ week, parentId }) {
-  const [newMensaje, setNewMensaje] = useState('');
-  const [mensajes, setMensajes] = useState([]);
-
-  // Cargar mensajes guardados en localStorage
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(`mensajes_semana_${week.id}`)) || [];
-    setMensajes(saved);
-  }, [week.id]);
-
-  // Enviar mensaje
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newMensaje.trim()) return;
-
-    const mensajeObj = {
-      id: Date.now(),
-      mensaje: newMensaje
-    };
-
-    const updated = [mensajeObj, ...mensajes]; // nuevo mensaje arriba
-    setMensajes(updated);
-    localStorage.setItem(`mensajes_semana_${week.id}`, JSON.stringify(updated));
-    setNewMensaje('');
-  };
+export default function WeekItem({ week, parentId, courseId, tasks = [] }) {
+  const collapseId = `collapse${week.id}`
+  const headingId = `heading${week.id}`
 
   return (
-    <div className="accordion-item">
-      <h2 className="accordion-header" id={`heading${week.id}`}>
-        <button
-          className="accordion-button collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target={`#collapse${week.id}`}
-          aria-expanded="false"
-          aria-controls={`collapse${week.id}`}
-        >
-          {week.title}
-        </button>
-      </h2>
-      <div
-        id={`collapse${week.id}`}
-        className="accordion-collapse collapse"
-        aria-labelledby={`heading${week.id}`}
-        data-bs-parent={`#${parentId}`}
-      >
-        <div className="accordion-body">
-          <p>{week.content}</p>
+    <div className="card week-card" key={week.id}>
+      <div className="card-header" id={headingId}>
+        <h2 className="mb-0">
+          <button
+            className="btn btn-link week-toggle d-flex justify-content-between align-items-center"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target={`#${collapseId}`}
+            aria-expanded="false"
+            aria-controls={collapseId}
+          >
+            <span>{week.title}</span>
+            <span className="chev">▾</span>
+          </button>
+        </h2>
+      </div>
 
-          {/* Formulario para nuevo mensaje */}
-          <form onSubmit={handleSubmit} className="mensaje-form">
-            <textarea
-              value={newMensaje}
-              onChange={(e) => setNewMensaje(e.target.value)}
-              placeholder="Escribe un mensaje..."
-              className="mensaje-input"
-            />
-            <button type="submit" className="btn btn-primary btn-sm">Enviar</button>
-          </form>
+      <div id={collapseId} className="collapse" aria-labelledby={headingId} data-bs-parent={`#${parentId}`}>
+        <div className="card-body">
+          <p className="week-content">{week.content}</p>
 
-          {/* Lista de mensajes */}
-          {mensajes.length > 0 && (
-            <div className="mensajes-container">
-              {mensajes.map((m) => (
-                <div key={m.id} className="mensaje-card">
-                  <p>{m.mensaje}</p>
+          {/* Tasks for this week */}
+          {tasks && tasks.length > 0 && (
+            <div className="week-tasks mt-3">
+              {tasks.map(t => (
+                <div key={t.id} className="card mb-2">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 className="mb-1">{t.title}</h6>
+                      <p className="muted mb-1">{t.description}</p>
+                      <small className="muted">Vence: {t.dueDateTime ? new Date(t.dueDateTime).toLocaleString() : 'No establecido'}</small>
+                    </div>
+                    <div>
+                      <StudentUpload courseId={courseId} taskId={t.id} />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           )}
+
+          <div className="week-actions mt-3 d-flex gap-2">
+            <Link to={`/course/${courseId}/content/${week.id}`} className="btn btn-outline-primary">Ir al contenido</Link>
+            <Link to={`/course/${courseId}/submit/${week.id}`} className="btn btn-outline-success">Entregar tarea</Link>
+            <Link to={`/course/${courseId}/forum#week-${week.id}`} className="btn btn-outline-secondary">Ver foro</Link>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

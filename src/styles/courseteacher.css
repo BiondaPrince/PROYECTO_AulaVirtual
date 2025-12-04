@@ -1,0 +1,17 @@
+/* Styles for CourseTeacher page */
+.course-teacher-page { padding: 20px }
+.teacher-topnav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 0; margin-bottom: 16px }
+.teacher-topnav nav { display:flex; gap:12px }
+.teacher-topnav .nav-item { color:#0f172a; text-decoration:none; padding:8px 12px; border-radius:6px; background: transparent; border: none }
+.teacher-topnav .nav-item:hover { background:#f1f5f9 }
+.teacher-topnav .nav-item.active { color: #0f172a }
+
+/* Per-tab active backgrounds */
+.teacher-topnav .nav-item.tasks.active { background:#e6f0ff; color:#0b5ed7 }
+.teacher-topnav .nav-item.view.active { background:#e6ffef; color:#0b7a3d }
+.teacher-topnav .nav-item.forum.active { background:#f3f4f6; color:#0f172a }
+.teacher-content { padding: 8px 0 }
+.task-form { display:flex; flex-direction:column; gap:8px; max-width:680px; margin-bottom:16px }
+.task-form input, .task-form textarea { padding:8px; border:1px solid #e6edf3; border-radius:6px }
+.teacher-tasks-list .task-card { border:1px solid rgba(2,6,23,0.06) }
+.forum-placeholder { padding:12px; background:#fbfdff; border:1px solid #eef4fb }
