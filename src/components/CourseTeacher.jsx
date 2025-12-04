@@ -27,13 +27,11 @@ export default function CourseTeacher() {
   const [forumThreads, setForumThreads] = useState([]);
   const [expandedThreads, setExpandedThreads] = useState([]);
   const [commentInputs, setCommentInputs] = useState({});
-  const [announcements, setAnnouncements] = useState([]);
   const [showForumForm, setShowForumForm] = useState(false);
   const [forumFormTitle, setForumFormTitle] = useState("");
   const [forumFormMessage, setForumFormMessage] = useState("");
-  const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
-  const [announcementTitleInput, setAnnouncementTitleInput] = useState("");
-  const [announcementMessageInput, setAnnouncementMessageInput] = useState("");
+  const [forumWeek, setForumWeek] = useState("1");
+  
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDateTime, setDueDateTime] = useState("");
@@ -48,12 +46,7 @@ export default function CourseTeacher() {
     } catch (e) {
       setForumThreads([]);
     }
-    try {
-      const rawA = localStorage.getItem(`announcements_course_${courseId}`);
-      setAnnouncements(rawA ? JSON.parse(rawA) : []);
-    } catch (e) {
-      setAnnouncements([]);
-    }
+    
   }, [courseId]);
 
   const handleForumFormSubmit = (e) => {
@@ -64,88 +57,89 @@ export default function CourseTeacher() {
     const payload = {
       curso: Number(courseId),
       titulo: title,
-      mensajeInicial: message
-    }
+      mensajeInicial: message,
+      semana: Number(forumWeek),
+    };
 
-    const key = `forum_course_${courseId}`
+    const key = `forum_course_${courseId}`;
 
     (async () => {
       try {
-        const res = await fetch('http://localhost:8080/foro', {
-          method: 'POST',
+        const res = await fetch("http://localhost:8080/foro", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            ...(token && token.token ? { Authorization: `Bearer ${token.token}` } : {})
+            "Content-Type": "application/json",
+            ...(token && token.token
+              ? { Authorization: `Bearer ${token.token}` }
+              : {}),
           },
-          body: JSON.stringify(payload)
-        })
+          body: JSON.stringify(payload),
+        });
 
         if (res.ok) {
-          const created = await res.json().catch(() => null)
-          const existing = JSON.parse(localStorage.getItem(key) || '[]')
-          const thread = created && created.id ? {
-            id: created.id,
-            title: created.titulo || created.title || title,
-            message: created.mensajeInicial || created.message || message,
-            date: created.date || new Date().toISOString(),
-            posts: created.posts || []
-          } : { id: Date.now(), title, message, date: new Date().toISOString(), posts: [] }
+          const created = await res.json().catch(() => null);
+          const existing = JSON.parse(localStorage.getItem(key) || "[]");
+          const thread =
+            created && created.id
+              ? {
+                  id: created.id,
+                  title: created.titulo || created.title || title,
+                  message: created.mensajeInicial || created.message || message,
+                  semana: created.semana || Number(forumWeek),
+                  date: created.date || new Date().toISOString(),
+                  posts: created.posts || [],
+                }
+              : {
+                  id: Date.now(),
+                  title,
+                  message,
+                  semana: Number(forumWeek),
+                  date: new Date().toISOString(),
+                  posts: [],
+                };
 
-          existing.unshift(thread)
-          localStorage.setItem(key, JSON.stringify(existing))
-          setForumThreads(existing)
+          existing.unshift(thread);
+          localStorage.setItem(key, JSON.stringify(existing));
+          setForumThreads(existing);
         } else {
           // fallback local
-          const existing = JSON.parse(localStorage.getItem(key) || '[]')
-          const thread = { id: Date.now(), title, message, date: new Date().toISOString(), posts: [] }
-          existing.unshift(thread)
-          localStorage.setItem(key, JSON.stringify(existing))
-          setForumThreads(existing)
+          const existing = JSON.parse(localStorage.getItem(key) || "[]");
+          const thread = {
+            id: Date.now(),
+            title,
+            message,
+            date: new Date().toISOString(),
+            posts: [],
+          };
+          existing.unshift(thread);
+          localStorage.setItem(key, JSON.stringify(existing));
+          setForumThreads(existing);
         }
       } catch (err) {
-        console.error('Error creando foro:', err)
-        const existing = JSON.parse(localStorage.getItem(key) || '[]')
-        const thread = { id: Date.now(), title, message, date: new Date().toISOString(), posts: [] }
-        existing.unshift(thread)
-        localStorage.setItem(key, JSON.stringify(existing))
-        setForumThreads(existing)
+        console.error("Error creando foro:", err);
+        const existing = JSON.parse(localStorage.getItem(key) || "[]");
+        const thread = {
+          id: Date.now(),
+          title,
+          message,
+          semana: Number(forumWeek),
+          date: new Date().toISOString(),
+          posts: [],
+        };
+        existing.unshift(thread);
+        localStorage.setItem(key, JSON.stringify(existing));
+        setForumThreads(existing);
       } finally {
-        setForumFormTitle('')
-        setForumFormMessage('')
-        setShowForumForm(false)
-        setActiveTab('forum')
+        setForumFormTitle("");
+        setForumFormMessage("");
+        setForumWeek("1");
+        setShowForumForm(false);
+        setActiveTab("forum");
       }
-    })()
-    localStorage.setItem(key, JSON.stringify(existing));
-    setForumThreads(existing);
-    setForumFormTitle("");
-    setForumFormMessage("");
-    setShowForumForm(false);
-    setActiveTab("forum");
+    })();
   };
 
-  const handleAnnouncementFormSubmit = (e) => {
-    e.preventDefault();
-    const title = (announcementTitleInput || "").trim();
-    if (!title) return;
-    const message = announcementMessageInput;
-
-    const key = `announcements_course_${courseId}`;
-    const existing = JSON.parse(localStorage.getItem(key) || "[]");
-    const announcement = {
-      id: Date.now(),
-      title,
-      message,
-      date: new Date().toISOString(),
-    };
-    existing.unshift(announcement);
-    localStorage.setItem(key, JSON.stringify(existing));
-    setAnnouncements(existing);
-    setAnnouncementTitleInput("");
-    setAnnouncementMessageInput("");
-    setShowAnnouncementForm(false);
-    setActiveTab("announcements");
-  };
+  
 
   const toggleThread = (threadId) => {
     setExpandedThreads((prev) =>
@@ -182,7 +176,6 @@ export default function CourseTeacher() {
   };
 
   useEffect(() => {
-    // Initialize active tab based on URL hash if present
     if (location && location.hash) {
       const hash = location.hash.replace("#", "");
       if (hash === "forum") setActiveTab("forum");
@@ -216,7 +209,6 @@ export default function CourseTeacher() {
       });
 
       if (res.ok) {
-        // Si el backend devuelve la tarea creada, úsala; si no, creamos una local
         const created = await res.json().catch(() => null);
         const newTask =
           created && created.id
@@ -244,7 +236,6 @@ export default function CourseTeacher() {
         setDescription("");
         setDueDateTime("");
       } else {
-        // Fallback: guardar localmente si falla el POST
         const newTask = {
           id: Date.now(),
           title: payload.titulo,
@@ -262,7 +253,6 @@ export default function CourseTeacher() {
       }
     } catch (err) {
       console.error("Error creando tarea:", err);
-      // fallback local
       const newTask = {
         id: Date.now(),
         title: payload.titulo,
@@ -476,6 +466,20 @@ export default function CourseTeacher() {
                   value={forumFormMessage}
                   onChange={(e) => setForumFormMessage(e.target.value)}
                 />
+                <label className='form-group d-block mb-1'>
+                  Semana
+                  <select
+                    className='form-control'
+                    value={forumWeek}
+                    onChange={(e) => setForumWeek(e.target.value)}
+                  >
+                    {Array.from({ length: 18 }, (_, i) => i + 1).map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <div className='d-flex gap-2 mt-1'>
                   <button className='btn btn-sm btn-success' type='submit'>
                     Crear foro
@@ -580,81 +584,6 @@ export default function CourseTeacher() {
           </section>
         )}
 
-        {activeTab === "announcements" && (
-          <section className='teacher-section'>
-            <h3>Anuncios</h3>
-            <p className='muted'>
-              Área para publicar anuncios del curso. (Plantilla simple por
-              ahora.)
-            </p>
-            <div className='d-flex justify-content-between align-items-center mb-2'>
-              <div className='muted'>Anuncios del curso.</div>
-              <div>
-                {!showAnnouncementForm && (
-                  <button
-                    className='btn btn-sm btn-outline-warning'
-                    onClick={() => setShowAnnouncementForm(true)}
-                  >
-                    Crear anuncio
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {showAnnouncementForm && (
-              <form onSubmit={handleAnnouncementFormSubmit} className='mb-3'>
-                <input
-                  className='form-control mb-1'
-                  placeholder='Título del anuncio'
-                  value={announcementTitleInput}
-                  onChange={(e) => setAnnouncementTitleInput(e.target.value)}
-                />
-                <textarea
-                  className='form-control mb-1'
-                  placeholder='Mensaje del anuncio'
-                  value={announcementMessageInput}
-                  onChange={(e) => setAnnouncementMessageInput(e.target.value)}
-                />
-                <div className='d-flex gap-2 mt-1'>
-                  <button className='btn btn-sm btn-warning' type='submit'>
-                    Publicar anuncio
-                  </button>
-                  <button
-                    type='button'
-                    className='btn btn-sm btn-outline-secondary'
-                    onClick={() => {
-                      setShowAnnouncementForm(false);
-                      setAnnouncementTitleInput("");
-                      setAnnouncementMessageInput("");
-                    }}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            )}
-
-            <div className='announcements-list'>
-              {announcements.length === 0 && (
-                <div className='card p-3'>
-                  <p>No hay anuncios publicados.</p>
-                </div>
-              )}
-              {announcements.map((a) => (
-                <div key={a.id} className='card mb-2'>
-                  <div className='card-body'>
-                    <h5>{a.title}</h5>
-                    <p className='muted'>{a.message}</p>
-                    <small className='muted'>
-                      Publicado:{" "}
-                      {a.date ? new Date(a.date).toLocaleString() : ""}
-                    </small>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
       </div>
     </div>
   );
