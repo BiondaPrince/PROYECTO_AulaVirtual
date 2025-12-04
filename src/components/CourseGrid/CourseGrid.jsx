@@ -49,12 +49,12 @@ export default function CourseGrid() {
               />
             </div>
 
-            <div className='course-info'>
-              <div className='progress'>{course.progress}%</div>
-              <h3 className='course-title'>{course.title}</h3>
-              <p className='course-details'>
-                {course.code} · {course.mode}
-              </p>
+          <div className="course-info">
+            <div className="progress">{course.progress}%</div>
+            <h3 className="course-title">{course.title}</h3>
+            <p className="course-details">
+              {course.mode}
+            </p>
             </div>
           </div>
         </Link>

@@ -10,7 +10,7 @@
   left: 0 !important;
   width: 70px !important;
   height: 100vh !important;
-  background: #000f37 !important;
+  background: var(--bg-main) !important;
   color: var(--txt-light);
   display: flex !important;
   flex-direction: column !important;
@@ -19,7 +19,7 @@
 }
 
 .menu-btn {
-  background: #000f37;
+  background: var(--bg-main);
   border: none;
   color: white;
   font-size: var(--icon-size);
@@ -33,6 +33,10 @@
   display: flex;
   flex-direction: column;
   /* border: solid 1px #fff;  */
+}
+
+.icon-list :hover {
+  background: var(--bg-hover);
 }
 
 .icon-list a {
@@ -60,12 +64,12 @@
   left: -260px;
   width: 260px;
   height: 100vh;
-  background: #000f37;
   color: var(--txt-light);
   transition: left 0.25s ease;
   /* padding-top: var(--spacing);*/
   z-index: 999;
   display: flex;
+  background: var(--bg-main) !important;
   flex-direction: column;
   /* gap: var(--spacing); */
 }
